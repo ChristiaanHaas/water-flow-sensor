@@ -7,7 +7,7 @@
 
 - [x] :electric_plug: Initialize sensor on GPIO pin
 - [x] :articulated_lorry: Set the sensor model
-- [x] :timer: Set a callback delay
+- [x] :watch: Set a callback delay
 - [x] :droplet: Get flow rate (L/m)
 - [x] :baby_bottle: Get volume consumption (L)
 
