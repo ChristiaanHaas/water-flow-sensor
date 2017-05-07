@@ -32,7 +32,7 @@ module.exports = class WaterFlow {
     // Callback
     this._callback      = callback
 
-    this._interval      = null
+    this._interval      = false
 
     // Watch events
     this._sensor.watch(this.count.bind(this))
@@ -55,6 +55,7 @@ module.exports = class WaterFlow {
       let volume = (this._i * this._countToVolume).toFixed(6)
       debug(`flow stopped with count ${this._i} and volume ${volume} L`)
       clearInterval(this._interval)
+      this._interval = false
     } else {
       this._prev = this._i
     }
@@ -74,7 +75,7 @@ module.exports = class WaterFlow {
     let hrstart  = process.hrtime()
     let prev     = this._i
 
-    if (this._interval == null) {
+    if (this._interval === false) {
       this._interval = setInterval(this.tick.bind(this), 1000)
     }
 
