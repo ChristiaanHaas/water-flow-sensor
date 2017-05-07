@@ -74,7 +74,7 @@ module.exports = class WaterFlow {
     let hrstart  = process.hrtime()
     let prev     = this._i
 
-    if (this._interval != null) {
+    if (this._interval == null) {
       this._interval = setInterval(this.tick.bind(this), 1000)
     }
 
