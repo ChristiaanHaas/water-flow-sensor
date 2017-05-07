@@ -1,5 +1,5 @@
 var wfs     = require('../index')
-  , sensor  = new wfs(17, 'POW110D3B', 0, 2000, logger)
+  , sensor  = new wfs(17, 'POW110D3B', logger)
   , total   = 0
 
 sensor.delay = 1000

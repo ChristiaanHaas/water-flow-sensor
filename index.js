@@ -10,85 +10,148 @@ const config     = require('./config')
   , defaultDelay = config.defaultDelay
   , debug        = require('debug')('wfs:main')
   , GPIO         = require('onoff').Gpio
-  , db          = require('./db')
-
-/**
- * Connect to database on start
- */
-
-db.connect(config.db.url, (error) => {
-  if (error) {
-    console.error('Unable to connect to ' + config.db.url)
-    onError(error);
-  } else {
-    debug('Connected to database ' + config.db.name)
-  }
-})
 
 module.exports = class WaterFlow {
 
-  constructor(pin = defaultPin, model = defaultModel, init = 0, delay = defaultDelay, callback) {
+  constructor(pin = defaultPin, model = defaultModel, callback) {
 
     // Initialize sensor
     this._i             = 0
     this._prev          = 0
+    this._interval      = false
+
+    // Sensor characteristics
     this._model         = model
     this._pin           = pin
     this._sensor        = new GPIO(this._pin, 'in', 'rising')
-
-    // Sensor characteristics
     this._countToFlow   = sensors[this._model].countToFlow
     this._countToVolume = sensors[this._model].countToVolume
+    this._factor        = sensors[this._model].factor
 
-    // Delay
-    this._delay         = delay
+    // Sensor metrics
+    this._isRunning     = false
+    this._hrstart       = 0
+    this._flow          = 0
+    this._volume        = 0
 
     // Callback
     this._callback      = callback
 
-    this._interval      = false
-
     // Watch events
     this._sensor.watch(this.count.bind(this))
-    //this._sensor.watch(this.computeFlow.bind(this))
     this._sensor.watch(this.runTick.bind(this))
 
-    debug(`Sensor ${this._model} on pin ${this._pin} (init ${this._i} and delay ${this._delay} ms)`)
+    debug(`Sensor ${this._model} on pin ${this._pin}`)
   }
 
-  get delay() {
-    return this._delay
+  get flow() {
+    return this._flow
   }
-  set delay(delay) {
-    this._delay = delay
-    debug(`Sensor ${this._model} on pin ${this._pin} - delay ${this._delay} ms`)
+  get volume() {
+    return this._volume
+  }
+  get isRunning() {
+    return this._isRunning
   }
 
   runTick() {
     debug(`flow detected`)
 
-    // Set interval
-    if (this._interval === false) {
-      this._interval = setInterval(this.tick.bind(this), 1000)
-    }
-
     // Unwatch sensor events
-    this._sensor.unwatch()
-    this._sensor.watch(this.count.bind(this))
+    this._sensor.unwatch(this.runTick.bind(this))
+    //this._sensor.watch(this.count.bind(this))
+
+    this._hrstart = process.hrtime()
+
+    // Set interval
+    //if (this._interval === false) {
+      this._interval = setInterval(this.tick.bind(this), 1000)
+    //}
+
+    this._isRunning = true
+
+    // Callback
+    this._callback({
+      'pin'      : this._pin,
+      'model'    : this._model,
+      'isRunning': this._isRunning,
+      'flow'     : this._flow,
+      'volume'   : this._volume
+    })
   }
 
   tick() {
-    if (this._prev == this._i) {
+    debug(`Tick`)
+
+    /*if (this._prev === this._i) {
       // Flow stopped
-      let volume = (this._i * this._countToVolume).toFixed(6)
-      debug(`flow stopped with count ${this._i} and volume ${volume} L`)
+      debug(`Flow stopped with count ${this._i}`)
+
+      // Compute flow and volume
+      this._flow = (this._i * this._countToFlow / delay).toFixed(6)
+      this._volume = (count * this._countToVolume).toFixed(6)
+
+      this._isRunning = false
+
       clearInterval(this._interval)
       this._interval = false
       this._sensor.watch(this.runTick.bind(this))
       this._i = 0
+
+      // Callback
+      this._callback({
+        'pin'      : this._pin,
+        'model'    : this._model,
+        'isRunning': this._isRunning,
+        'flow'     : this._flow,
+        'volume'   : this._volume
+      })
+
     } else {
-      this._prev = this._i
+      // Flow detected
+      debug(`Flow detected (count ${this._i})`)
+
+      // Get count and delay
+      let i      = this._i
+      let hrend  = process.hrtime(this._hrstart)
+      //this._hrstart = process.hrtime()
+      let delay  = hrend[0] + hrend[1] / 1e9
+
+      // Update volume and flow metrics
+      let count  = i - this._prev
+      this._flow = (count * this._countToFlow / delay).toFixed(6)
+      this._volume = (count * this._countToVolume).toFixed(6)
+
     }
+
+    let hrend  = process.hrtime(this._hrstart)
+    let time   = (hrend[0] + hrend[1] / 1e9).toFixed(6)
+
+    let flow   = (count * this._countToFlow / time).toFixed(6)
+    let volume = (this._i * this._countToVolume).toFixed(6)
+
+    if (this._prev === this._i) {
+      // Flow stopped
+      debug(`flow stopped with count ${this._i} and volume ${volume} L`)
+
+      clearInterval(this._interval)
+      this._interval = false
+      this._sensor.watch(this.runTick.bind(this))
+      this._i = 0
+
+      // Callback
+      this._callback({
+        'pin'   : this._pin,
+        'model' : this._model,
+        'flow'  : flow,
+        'volume': volume,
+        'pulses': this._i
+      })
+
+    } else {
+      this._hrstart = process.hrtime()
+      this._prev = this._i
+    }*/
   }
 
   count(err, state) {
