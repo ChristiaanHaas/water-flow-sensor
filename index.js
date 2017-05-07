@@ -17,6 +17,7 @@ module.exports = class WaterFlow {
 
     // Initialize sensor
     this._i             = init
+    this._prev          = 0
     this._model         = model
     this._pin           = pin
     this._sensor        = new GPIO(this._pin, 'in', 'rising')
@@ -30,6 +31,8 @@ module.exports = class WaterFlow {
 
     // Callback
     this._callback      = callback
+
+    this._interval      = null
 
     // Watch events
     this._sensor.watch(this.count.bind(this))
@@ -46,6 +49,16 @@ module.exports = class WaterFlow {
     debug(`Sensor ${this._model} on pin ${this._pin} - delay ${this._delay} ms`)
   }
 
+  tick() {
+    if (this._prev == this._i) {
+      // Flow stopped
+      debug(`flow stopped`)
+      clearInterval(this._interval)
+    } else {
+      this._prev = this._i
+    }
+  }
+
   count(err, state) {
     this._i++
   }
@@ -60,8 +73,12 @@ module.exports = class WaterFlow {
     let hrstart  = process.hrtime()
     let prev     = this._i
 
+    if (this._interval != null) {
+      this._interval = setInterval(this.tick.bind(this), 1000)
+    }
+
     // Wait
-    setTimeout(() => {
+    /*setTimeout(() => {
 
       // Renew watch event
       this._sensor.watch(this.computeFlow.bind(this))
@@ -84,7 +101,7 @@ module.exports = class WaterFlow {
 
       debug(`${this._pin} | ${this._model} | ${flow} | ${volume} | ${count} | ${time} s`)
 
-    }, this._delay)
+    }, this._delay)*/
 
   }
 }
