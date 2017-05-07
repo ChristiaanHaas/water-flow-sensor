@@ -50,6 +50,7 @@ module.exports = class WaterFlow {
   }
 
   tick() {
+    debug(`tick`)
     if (this._prev == this._i) {
       // Flow stopped
       debug(`flow stopped`)
