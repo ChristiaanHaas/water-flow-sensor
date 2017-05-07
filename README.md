@@ -61,3 +61,5 @@ Tested on Rapsberry Pi model B
 ### Dependencies
 
 * `onoff ^1.1.2`
+* `mongodb ^2.2.26`
+* MongoDB database

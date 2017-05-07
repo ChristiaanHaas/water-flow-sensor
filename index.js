@@ -10,6 +10,20 @@ const config     = require('./config')
   , defaultDelay = config.defaultDelay
   , debug        = require('debug')('wfs:main')
   , GPIO         = require('onoff').Gpio
+  , db          = require('./db')
+
+/**
+ * Connect to database on start
+ */
+
+db.connect(config.db.url, (error) => {
+  if (error) {
+    console.error('Unable to connect to ' + config.db.url)
+    onError(error);
+  } else {
+    debug('Connected to database ' + config.db.name)
+  }
+})
 
 module.exports = class WaterFlow {
 

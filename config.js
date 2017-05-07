@@ -22,6 +22,19 @@ config.defaultPin   = 17
 config.defaultModel = 'POW110D3B'
 config.defaultDelay = 1000
 
+/**
+ * Database configuration
+ */
+
+config.db = {}
+config.db.server = 'mongo'
+config.db.protocol = 'mongodb'
+config.db.host = 'localhost'
+config.db.port = '27017'
+config.db.name = 'water'
+config.db.url = config.db.protocol + '://' + config.db.host + ':'
+                  + config.db.port + '/' + config.db.name
+
 
 /* Exports */
 
