@@ -52,7 +52,7 @@ module.exports = class WaterFlow {
   tick() {
     if (this._prev == this._i) {
       // Flow stopped
-      let volume = (count * this._countToVolume).toFixed(6)
+      let volume = (this._i * this._countToVolume).toFixed(6)
       debug(`flow stopped with count ${this._i} and volume ${volume} L`)
       clearInterval(this._interval)
     } else {
