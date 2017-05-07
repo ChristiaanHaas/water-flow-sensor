@@ -12,9 +12,9 @@ config.sensors['YF-S201'] = config.sensors['POW110D3B']
 
 config.sensors['YF-S201C'] = {}
 // Q (L/m) = F (Hz) / 5 (± 3%)
-config.sensors['YF-S201C'].countToFlow    = 1 / 5
-// TODO
-config.sensors['YF-S201C'].countToVolume  = 1
+config.sensors['YF-S201C'].countToFlow    = 1 / 6.29
+// TODO Q (L/min) / 60
+config.sensors['YF-S201C'].countToVolume  = 0,0026497
 
 /* Default pin and model */
 
