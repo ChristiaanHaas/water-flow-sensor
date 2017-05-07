@@ -68,20 +68,20 @@ module.exports = class WaterFlow {
 
   computeFlow(err, state) {
 
+    if (this._interval === false) {
+      this._interval = setInterval(this.tick.bind(this), 1000)
+    }
+
     // Unwatch event
-    this._sensor.unwatch()
+    /*this._sensor.unwatch()
     this._sensor.watch(this.count.bind(this))
 
     // Get previous counter
     let hrstart  = process.hrtime()
     let prev     = this._i
 
-    if (this._interval === false) {
-      this._interval = setInterval(this.tick.bind(this), 1000)
-    }
-
     // Wait
-    /*setTimeout(() => {
+    setTimeout(() => {
 
       // Renew watch event
       this._sensor.watch(this.computeFlow.bind(this))
