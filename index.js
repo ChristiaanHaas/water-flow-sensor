@@ -16,7 +16,7 @@ module.exports = class WaterFlow {
   constructor(pin = defaultPin, model = defaultModel, init = 0, delay = defaultDelay, callback) {
 
     // Initialize sensor
-    this._i             = init
+    this._i             = 0
     this._prev          = 0
     this._model         = model
     this._pin           = pin
@@ -36,7 +36,8 @@ module.exports = class WaterFlow {
 
     // Watch events
     this._sensor.watch(this.count.bind(this))
-    this._sensor.watch(this.computeFlow.bind(this))
+    //this._sensor.watch(this.computeFlow.bind(this))
+    this._sensor.watch(this.runTick.bind(this))
 
     debug(`Sensor ${this._model} on pin ${this._pin} (init ${this._i} and delay ${this._delay} ms)`)
   }
@@ -49,14 +50,28 @@ module.exports = class WaterFlow {
     debug(`Sensor ${this._model} on pin ${this._pin} - delay ${this._delay} ms`)
   }
 
+  runTick() {
+    debug(`flow detected`)
+
+    // Set interval
+    if (this._interval === false) {
+      this._interval = setInterval(this.tick.bind(this), 1000)
+    }
+
+    // Unwatch sensor events
+    this._sensor.unwatch()
+    this._sensor.watch(this.count.bind(this))
+  }
+
   tick() {
-    debug(`tick ${this._i}`)
     if (this._prev == this._i) {
       // Flow stopped
       let volume = (this._i * this._countToVolume).toFixed(6)
       debug(`flow stopped with count ${this._i} and volume ${volume} L`)
       clearInterval(this._interval)
       this._interval = false
+      this._sensor.watch(this.runTick.bind(this))
+      this._i = 0
     } else {
       this._prev = this._i
     }
@@ -68,12 +83,12 @@ module.exports = class WaterFlow {
 
   computeFlow(err, state) {
 
-    if (this._interval === false) {
+    /*if (this._interval === false) {
       this._interval = setInterval(this.tick.bind(this), 1000)
     }
 
     // Unwatch event
-    /*this._sensor.unwatch()
+    this._sensor.unwatch()
     this._sensor.watch(this.count.bind(this))
 
     // Get previous counter
