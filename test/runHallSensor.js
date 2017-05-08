@@ -1,9 +1,9 @@
 var debug        = require('debug')('wfs:runHallSensor')
   , hall         = require('../hallSensor')
-  , sensor       = new hall(17)
+  , sensor       = new hall(17, counter)
   , i            = 0
 
-function logger() {
+function counter() {
   i++
   debug(`Hall sensor ${sensor.pin} count ${i}`)
 }
