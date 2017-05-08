@@ -71,7 +71,7 @@ module.exports = class WaterFlow {
 
     // Set interval watcher
     //this._interval = setInterval(this.watcher.bind(this), 1000)
-    watcher().bind(this)
+    this.watcher().bind(this)
 
     // Callback
     this._callback({
