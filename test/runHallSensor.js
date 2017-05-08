@@ -1,1 +1,2 @@
-var sensor  = new require('../hallSensor')(17)
+var hall   = require('../hallSensor')
+  , sensor = new hall(17)
