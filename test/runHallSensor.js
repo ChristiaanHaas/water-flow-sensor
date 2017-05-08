@@ -5,5 +5,5 @@ var debug        = require('debug')('wfs:runHallSensor')
 
 function logger() {
   i++
-  debug(`Hall sensor ${sensor.pin} count ${i})
+  debug(`Hall sensor ${sensor.pin} count ${i}`)
 }
