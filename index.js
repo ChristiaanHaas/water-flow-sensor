@@ -39,7 +39,6 @@ module.exports = class WaterFlow {
 
     // Watch events
     this._sensor.watch(this.start.bind(this))
-    this._sensor.watch(this.tick.bind(this))
 
     debug(`Sensor ${this._model} on pin ${this._pin}`)
   }
@@ -72,7 +71,7 @@ module.exports = class WaterFlow {
 
     // Set interval watcher
     //this._interval = setInterval(this.watcher.bind(this), 1000)
-    this.watcher().bind(this)
+    //this.watcher().bind(this)
 
     // Callback
     this._callback({
