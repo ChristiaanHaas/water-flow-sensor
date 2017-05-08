@@ -20,6 +20,9 @@ module.exports = class HallSensor {
     // Watch ticks
     this._sensor.watch(this.tick.bind(this))
 
+    // Callback
+    this._callback      = callback
+
     debug(`Hall sensor on pin ${this._pin} initialized`)
   }
 
@@ -27,7 +30,12 @@ module.exports = class HallSensor {
     return this._pin
   }
 
+  get callback() {
+    return this._callback
+  }
+
   tick(err, state) {
     debug(`tick`)
+    this.callback()
   }
 }
