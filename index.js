@@ -19,6 +19,8 @@ module.exports = class WaterFlow {
     this._i             = 0
     this._prev          = 0
     this._interval      = false
+    this._isRunning     = false
+    this._hrstart       = 0
 
     // Sensor characteristics
     this._model         = model
@@ -29,8 +31,6 @@ module.exports = class WaterFlow {
     this._factor        = sensors[this._model].factor
 
     // Sensor metrics
-    this._isRunning     = false
-    this._hrstart       = 0
     this._flow          = 0
     this._volume        = 0
 
@@ -61,6 +61,7 @@ module.exports = class WaterFlow {
     this._sensor.unwatch(this.runTick.bind(this))
     //this._sensor.watch(this.count.bind(this))
 
+    // First tick
     this._hrstart = process.hrtime()
 
     // Set interval
@@ -68,6 +69,7 @@ module.exports = class WaterFlow {
       this._interval = setInterval(this.tick.bind(this), 1000)
     //}
 
+    // Set the sensor status
     this._isRunning = true
 
     // Callback
