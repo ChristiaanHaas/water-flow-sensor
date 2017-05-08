@@ -30,12 +30,8 @@ module.exports = class HallSensor {
     return this._pin
   }
 
-  get callback() {
-    return this._callback
-  }
-
   tick(err, state) {
     debug(`tick`)
-    this.callback()
+    this._callback()
   }
 }
