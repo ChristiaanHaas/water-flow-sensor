@@ -11,28 +11,23 @@ const config     = require('./config')
 
 module.exports = class HallSensor {
 
-  constructor(pin = defaultPin) {
+  constructor(pin = defaultPin, callback) {
 
-    // Init sensor
-    this._i             = 0
-
-    // Sensor characteristics
+    // Characteristics
     this._pin           = pin
     this._sensor        = new GPIO(pin, 'in', 'rising')
 
-    // Watch ticks to increment counter
+    // Watch ticks
     this._sensor.watch(this.increment.bind(this))
 
     debug(`Hall sensor on pin ${this._pin} initialized`)
   }
 
-  get count() {
-    return this._i
+  get pin() {
+    return this._pin
   }
 
-  increment(err, state) {
-    this._i++
-
-    debug(`Hall sensor on pin ${this._pin} count ${this._i}`)
+  tick(err, state) {
+    debug(`tick`)
   }
 }
