@@ -15,7 +15,6 @@ module.exports = class HallSensor {
 
     // Init sensor
     this._i             = 0
-    this._isRunning     = false
 
     // Sensor characteristics
     this._pin           = pin

@@ -1,1 +1,1 @@
-var sensor  = new require('../hallSensor.js')(17)
+var sensor  = new require('../hallSensor')(17)
