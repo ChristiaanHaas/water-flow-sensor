@@ -16,8 +16,8 @@ module.exports = class WaterFlow {
 
     // Init sensor
     this._i             = 0
-    this._prev          = 0
-    this._interval      = false
+    //this._prev          = 0
+    //this._interval      = false
     this._isRunning     = false
     this._hrstart       = 0
     this._hrend         = 0
@@ -39,6 +39,7 @@ module.exports = class WaterFlow {
 
     // Watch events
     this._sensor.watch(this.start.bind(this))
+    this._sensor.watch(this.tick.bind(this))
 
     debug(`Sensor ${this._model} on pin ${this._pin}`)
   }
@@ -57,13 +58,13 @@ module.exports = class WaterFlow {
     debug(`Start`)
 
     // Increment counter
-    this._i++
+    this._i = 1
 
     // Get start time
     this._hrstart = process.hrtime()
 
     // Watch for next ticks
-    //this._sensor.unwatch()
+    this._sensor.unwatch()
     this._sensor.watch(this.tick.bind(this))
 
     // Set the sensor status
