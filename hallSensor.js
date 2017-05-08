@@ -18,7 +18,7 @@ module.exports = class HallSensor {
     this._sensor        = new GPIO(pin, 'in', 'rising')
 
     // Watch ticks
-    this._sensor.watch(this.increment.bind(this))
+    this._sensor.watch(this.tick.bind(this))
 
     debug(`Hall sensor on pin ${this._pin} initialized`)
   }
