@@ -95,7 +95,7 @@ module.exports = class WaterFlow {
   }
 
   watcher() {
-    debug(`Watcher`)
+    debug(`Watcher ${this.isRunning}`)
 
     while (this.isRunning) {
 
@@ -151,6 +151,7 @@ module.exports = class WaterFlow {
       }, 1000)
 
     }
+    debug(`End of while`)
   }
 
   callback() {
