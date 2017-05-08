@@ -54,17 +54,17 @@ module.exports = class WaterFlow {
   }
 
   start() {
-    debug(`start`)
-
-    // Watch for next ticks
-    this._sensor.unwatch()
-    this._sensor.watch(this.tick.bind(this))
+    debug(`Start`)
 
     // Increment counter
     this._i++
 
     // Get start time
     this._hrstart = process.hrtime()
+
+    // Watch for next ticks
+    this._sensor.unwatch()
+    this._sensor.watch(this.tick.bind(this))
 
     // Set the sensor status
     this._isRunning = true
@@ -95,7 +95,7 @@ module.exports = class WaterFlow {
   }
 
   watcher() {
-    debug(`Watcher ${this.isRunning}`)
+    debug(`Watcher`)
 
     while (this.isRunning) {
 
@@ -151,7 +151,6 @@ module.exports = class WaterFlow {
       }, 1000)
 
     }
-    debug(`End of while`)
   }
 
   callback() {
