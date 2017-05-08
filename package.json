@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "DEBUG=wfs:* node test/runHallSensor.js",
+    "test": "DEBUG=wfs:runHallSensor node test/runHallSensor.js",
     "start": "node index.js"
   },
   "author": "Geoffrey PETRI",
