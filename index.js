@@ -63,7 +63,7 @@ module.exports = class WaterFlow {
     this._hrstart = process.hrtime()
 
     // Watch for next ticks
-    this._sensor.unwatch()
+    //this._sensor.unwatch()
     this._sensor.watch(this.tick.bind(this))
 
     // Set the sensor status
