@@ -132,7 +132,7 @@ module.exports = class WaterFlow {
 
       // Compute current flow
       let delay  = (hrend[0] + hrend[1] / 1e9).toFixed(6)
-      let count  = i - prev
+      let count  = i - this._prev
       this._flow = (count * this._countToFlow / delay).toFixed(6)
 
       // Set the current counter as previous
