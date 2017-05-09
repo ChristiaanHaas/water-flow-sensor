@@ -16,8 +16,8 @@ module.exports = class WaterFlow {
 
     // Init sensor
     this._i             = 0
-    //this._prev          = 0
-    //this._interval      = false
+    this._prev          = 0
+    this._interval      = false
     this._isRunning     = false
     this._hrstart       = 0
     this._hrend         = 0
@@ -58,9 +58,11 @@ module.exports = class WaterFlow {
 
     // Increment counter
     this._i = 1
+    this._prev  = this._i
 
     // Get start time
     this._hrstart = process.hrtime()
+    this._hrend = 0
 
     // Watch for next ticks
     this._sensor.unwatch()
@@ -70,8 +72,7 @@ module.exports = class WaterFlow {
     this._isRunning = true
 
     // Set interval watcher
-    //this._interval = setInterval(this.watcher.bind(this), 1000)
-    //this.watcher().bind(this)
+    this._interval = setInterval(this.watcher.bind(this), 1000)
 
     // Callback
     this._callback({
@@ -97,60 +98,49 @@ module.exports = class WaterFlow {
   watcher() {
     debug(`Watcher`)
 
-    while (this.isRunning) {
+    // Get current counter
+    let i = this._i
+    let hrend = this._hrend
 
-      // Get current count and time
-      let prev    = this._i
-      let hrstart = this._hrend
+    // Is the sensor running ?
+    if (this._prev === i) {
+      // Sensor is not running
 
-      setTimeout(() => {
+      // Set the sensor status
+      this._isRunning = false
 
-        // Get new count and time
-        let i      = this._i
-        let hrend  = this._hrend
+      // Set the first tick watcher
+      this._sensor.unwatch()
+      this._sensor.watch(this.start.bind(this))
 
-        // Is the sensor running ?
-        if (prev === i) {
-          // Sensor is not running
+      // Callback
+      this._callback({
+        'pin'      : this._pin,
+        'model'    : this._model,
+        'isRunning': this._isRunning,
+        'flow'     : this._flow,
+        'volume'   : this._volume
+      })
 
-          // Set the sensor status
-          this._isRunning = false
+      debug(`Flow stopped (${this._volume} L)`)
 
-          // Set the first tick watcher
-          this._sensor.unwatch()
-          this._sensor.watch(this.start.bind(this))
+    } else {
+      // Sensor is running
 
-          // Callback
-          this._callback({
-            'pin'      : this._pin,
-            'model'    : this._model,
-            'isRunning': this._isRunning,
-            'flow'     : this._flow,
-            'volume'   : this._volume
-          })
+      // Compute volume
+      this._volume = (i * this._countToVolume).toFixed(6)
 
-          debug(`Flow stopped (${this._volume} L)`)
+      // Compute current flow
+      let delay  = (hrend[0] + hrend[1] / 1e9).toFixed(6)
+      let count  = i - prev
+      this._flow = (count * this._countToFlow / delay).toFixed(6)
 
-        } else {
-          // Sensor is running
+      // Set the current counter as previous
+      this._prev = i
 
-          // Set the current counter as previous
-          //this._prev = this._i
-
-          // Compute volume
-          this._volume = (i * this._countToVolume).toFixed(6)
-
-          // Compute current flow
-          let time   = (hrend[0] + hrend[1] / 1e9).toFixed(6)
-          let count  = i - prev
-          this._flow = (count * this._countToFlow / time).toFixed(6)
-
-          debug(`Flow detected (${this._flow} L/min)`)
-        }
-
-      }, 1000)
-
+      debug(`Flow detected (${this._flow} L/min)`)
     }
+
   }
 
   callback() {
