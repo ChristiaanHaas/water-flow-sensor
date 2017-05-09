@@ -8,6 +8,5 @@ var wfs     = require('../index')
   "Time                     | Flow       | Volume  | Pulses")*/
 
 function logger(res) {
-  /*let now = new Date().toISOString()
-  console.info(`${now} | ${res.flow} L/m | ${res.volume} L | ${res.pulses}`)*/
+  console.info(res)
 }

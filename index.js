@@ -39,7 +39,7 @@ module.exports = class WaterFlow {
     // Watch events
     this._sensor.watch(this.start.bind(this))
 
-    debug(`Sensor ${this._model} on pin ${this._pin}`)
+    debug(`${this._model}/${this._pin}: Sensor initialized`)
   }
 
   get flow() {
@@ -65,7 +65,7 @@ module.exports = class WaterFlow {
   }
 
   start() {
-    debug(`Start`)
+    debug(`${this._model}/${this._pin}: Flow detected`)
 
     // Increment counter
     this._i = 1
@@ -98,11 +98,11 @@ module.exports = class WaterFlow {
     // Get time
     this._hrend = process.hrtime(this._hrstart)
 
-    debug(`Tick ${this._i} from ${this._model} on pin ${this._pin}`)
+    debug(`${this._model}/${this._pin}: Tick ${this._i}`)
   }
 
   watcher() {
-    debug(`Interval watcher for ${this._model} on pin ${this._pin}`)
+    debug(`${this._model}/${this._pin}: Interval watcher`)
 
     // Get current counter
     let i = this._i
@@ -132,7 +132,7 @@ module.exports = class WaterFlow {
       // Callback
       this.callback()
 
-      debug(`Flow stopped (${this._volume} L - flow rate ${this._flow} L/m)`)
+      debug(`${this._model}/${this._pin}: Flow stopped (${this._volume} L - flow rate ${this._flow} L/m)`)
 
     } else {
       // Sensor is running
@@ -149,7 +149,7 @@ module.exports = class WaterFlow {
       this._prev = i
       this._lasthrend = hrend
 
-      debug(`Flow detected (${this._flow} L/min)`)
+      debug(`${this._model}/${this._pin}: FLow rate ${this._flow} L/min`)
     }
 
   }
