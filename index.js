@@ -44,10 +44,10 @@ module.exports = class WaterFlow {
 
     debug(`test hrtime`)
     this._t = process.hrtime()
-    this._t = process.hrtime(t)
+    this._t = process.hrtime(this._t)
     console.log('benchmark took %d seconds and %d nanoseconds', this._t[0], this._t[1]);
     this._t = process.hrtime()
-    this._t = process.hrtime(t)
+    this._t = process.hrtime(this._t)
     console.log('benchmark took %d seconds and %d nanoseconds', this._t[0], this._t[1]);
     debug(`end test hrtime`)
   }
