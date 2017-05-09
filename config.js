@@ -12,7 +12,7 @@ config.sensors['YF-S201'] = config.sensors['POW110D3B']
 
 config.sensors['YF-S201C'] = {}
 // F (Hz) = 5 * Q (L/min)
-config.sensors['POW110D3B'].factor  = 6.29
+config.sensors['YF-S201C'].factor   = 6.29
 
 /* Default pin and model */
 

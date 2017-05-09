@@ -27,8 +27,6 @@ module.exports = class WaterFlow {
     this._model         = model
     this._pin           = pin
     this._sensor        = new GPIO(this._pin, 'in', 'rising')
-    this._countToFlow   = sensors[this._model].countToFlow
-    this._countToVolume = sensors[this._model].countToVolume
     this._factor        = sensors[this._model].factor
 
     // Metrics
