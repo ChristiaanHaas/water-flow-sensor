@@ -109,6 +109,9 @@ module.exports = class WaterFlow {
       // Set the sensor status
       this._isRunning = false
 
+      // Clear interval watcher
+      clearInterval(this._interval)
+
       // Set the first tick watcher
       this._sensor.unwatch()
       this._sensor.watch(this.start.bind(this))
