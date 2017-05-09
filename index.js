@@ -53,11 +53,15 @@ module.exports = class WaterFlow {
   }
 
   setVolume(i) {
-    // V = F / factor * t / 60
-    // (L) (Hz)         (s)
-    // V = i / (factor * 60)
-    // (L)
+    // V (L) = F (Hz) / factor * t (s) / 60
+    // V (L) = i / (factor * 60)
     this._volume = i / (this._factor * 60)
+  }
+
+  setFlow(count, delay) {
+    // Q (L/min) = F (Hz) / factor
+    //   with F (Hz) = count / delay (s)
+    this._flow = (count / delay / this._factor)
   }
 
   start() {
@@ -83,28 +87,22 @@ module.exports = class WaterFlow {
     this._interval = setInterval(this.watcher.bind(this), 1000)
 
     // Callback
-    this._callback({
-      'pin'      : this._pin,
-      'model'    : this._model,
-      'isRunning': this._isRunning,
-      'flow'     : this._flow,
-      'volume'   : this._volume
-    })
+    this._callback()
 
   }
 
   tick() {
-    //debug(`Tick`)
-
     // Increment counter
     this._i++
 
     // Get time
     this._hrend = process.hrtime(this._hrstart)
+
+    debug(`Tick ${this._i} from ${this._model} on pin ${this._pin}`)
   }
 
   watcher() {
-    //debug(`Watcher`)
+    debug(`Interval watcher for ${this._model} on pin ${this._pin}`)
 
     // Get current counter
     let i = this._i
@@ -129,18 +127,10 @@ module.exports = class WaterFlow {
 
       // Compute global flow rate
       let delay  = (hrend[0] + hrend[1] / 1e9)
-      // Q (L/min) = F (Hz) / factor
-      // F (Hz) = count / delay (s)
-      this._flow = (i / delay / this._factor)
+      this.setFlow(i, delay)
 
       // Callback
-      this._callback({
-        'pin'      : this._pin,
-        'model'    : this._model,
-        'isRunning': this._isRunning,
-        'flow'     : this._flow,
-        'volume'   : this._volume
-      })
+      this.callback()
 
       debug(`Flow stopped (${this._volume} L - flow rate ${this._flow} L/m)`)
 
@@ -153,10 +143,7 @@ module.exports = class WaterFlow {
       // Compute current flow
       let delay  = (hrend[0] + hrend[1] / 1e9) - (this._lasthrend[0] + this._lasthrend[1] / 1e9)
       let count  = i - this._prev
-      // Q (L/min) = F (Hz) / factor
-      // F (Hz) = count / delay (s)
-      this._flow = count / delay / this._factor
-      //this.setFlow(count, delay)
+      this.setFlow(count, delay)
 
       // Set the current counter as previous
       this._prev = i
