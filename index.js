@@ -82,7 +82,7 @@ module.exports = class WaterFlow {
     this._isRunning = true
 
     // Set interval watcher
-    this._interval = setInterval(this.watcher.bind(this), 1000)
+    this._interval = setInterval(this.watcher.bind(this), 500)
 
     // Callback
     this._callback({
@@ -130,10 +130,10 @@ module.exports = class WaterFlow {
       this.setVolume(i)
 
       // Compute global flow rate
-      let delay  = (hrend[0] + hrend[1] / 1e9).toFixed(6)
+      let delay  = (hrend[0] + hrend[1] / 1e9)
       // Q (L/min) = F (Hz) / factor
       // F (Hz) = count / delay (s)
-      this._flow = (i / delay / this._factor).toFixed(6)
+      this._flow = (i / delay / this._factor)
 
       // Callback
       this._callback({
@@ -154,6 +154,8 @@ module.exports = class WaterFlow {
 
       // Compute current flow
       let delay  = (hrend[0] + hrend[1] / 1e9) - (this._lasthrend[0] + this._lasthrend[1] / 1e9)
+      debug(`${hrend[0] + hrend[1] / 1e9}`)
+      debug(`${this._lasthrend[0] + this._lasthrend[1] / 1e9}`)
       let count  = i - this._prev
       // Q (L/min) = F (Hz) / factor
       // F (Hz) = count / delay (s)
