@@ -71,7 +71,8 @@ module.exports = class WaterFlow {
 
     // Get start time
     this._hrstart = process.hrtime()
-    this._hrend = 0
+    this._hrend = this._hrstart
+    this._lasthrend = this._hrstart
 
     // Watch for next ticks
     this._sensor.unwatch()
