@@ -7,7 +7,7 @@ config.sensors = []
 config.sensors['POW110D3B'] = {}
 config.sensors['POW110D3B'].countToFlow   = 1 / 7.5 // Pulse frequency (Hz) in Horizontal Test= 7.5Q, Q is flow rate in L/min. (Results in +/- 3% range)
 config.sensors['POW110D3B'].countToVolume = 0.002217 //
-config.sensors['POW110D3B'].factor        = 7.5 //
+config.sensors['POW110D3B'].factor        = 7.51766 //
 
 config.sensors['YF-S201'] = config.sensors['POW110D3B']
 
