@@ -43,23 +43,12 @@ module.exports = class WaterFlow {
     debug(`Sensor ${this._model} on pin ${this._pin}`)
 
     debug(`test hrtime`)
-    this._teststart = process.hrtime()
-    this._test = process.hrtime(this._teststart)
-    debug(`this._test = process.hrtime(this._teststart): ${this._test[0] + this._test[1] / 1e9}`)
-    this._test = process.hrtime(this._test)
-    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
-    this._test = process.hrtime(this._test)
-    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
-    this._test = process.hrtime(this._test)
-    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
-    this._test = process.hrtime(this._test)
-    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
-    this._test = process.hrtime(this._test)
-    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
-    this._test = process.hrtime(this._test)
-    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
-    this._test = process.hrtime(this._test)
-    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
+    this._t = process.hrtime()
+    this._t = process.hrtime(t)
+    console.log('benchmark took %d seconds and %d nanoseconds', this._t[0], this._t[1]);
+    this._t = process.hrtime()
+    this._t = process.hrtime(t)
+    console.log('benchmark took %d seconds and %d nanoseconds', this._t[0], this._t[1]);
     debug(`end test hrtime`)
   }
 
