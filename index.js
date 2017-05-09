@@ -45,9 +45,9 @@ module.exports = class WaterFlow {
     debug(`test hrtime`)
     this._teststart = process.hrtime()
     this._test = process.hrtime(this._teststart)
-    debug(`this._test = process.hrtime(this._teststart): ${this._test}`)
+    debug(`this._test = process.hrtime(this._teststart): ${this._test[0] + this._test[0] / 1e9}`)
     this._test = process.hrtime(this._test)
-    debug(`this._test = process.hrtime(this._teststart): ${this._test}`)
+    debug(`this._test = process.hrtime(this._teststart): ${this._test[0] + this._test[0] / 1e9}`)
     debug(`end test hrtime`)
   }
 
