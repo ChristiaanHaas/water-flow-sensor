@@ -41,6 +41,14 @@ module.exports = class WaterFlow {
     this._sensor.watch(this.start.bind(this))
 
     debug(`Sensor ${this._model} on pin ${this._pin}`)
+
+    debug(`test hrtime`)
+    this._teststart = process.hrtime()
+    this._test = process.hrtime(this._teststart)
+    debug(`this._test = process.hrtime(this._teststart): ${this._test}`)
+    this._test = process.hrtime(this._test)
+    debug(`this._test = process.hrtime(this._teststart): ${this._test}`)
+    debug(`end test hrtime`)
   }
 
   get flow() {
