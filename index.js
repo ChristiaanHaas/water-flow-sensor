@@ -96,7 +96,7 @@ module.exports = class WaterFlow {
   }
 
   watcher() {
-    debug(`Watcher`)
+    //debug(`Watcher`)
 
     // Get current counter
     let i = this._i
@@ -116,6 +116,9 @@ module.exports = class WaterFlow {
       this._sensor.unwatch()
       this._sensor.watch(this.start.bind(this))
 
+      // Compute volume
+      this._volume = (i / (this._factor * 60)).toFixed(6)
+
       // Callback
       this._callback({
         'pin'      : this._pin,
@@ -131,12 +134,18 @@ module.exports = class WaterFlow {
       // Sensor is running
 
       // Compute volume
-      this._volume = (i * this._countToVolume).toFixed(6)
+      // V = F / factor * t / 60
+      // (L) (Hz)         (s)
+      // V = i / (factor * 60)
+      // (L)
+      this._volume = (i / (this._factor * 60)).toFixed(6)
 
       // Compute current flow
       let delay  = (hrend[0] + hrend[1] / 1e9).toFixed(6)
       let count  = i - this._prev
-      this._flow = (count * this._countToFlow / delay).toFixed(6)
+      // Q (L/min) = F (Hz) / factor
+      // F (Hz) = count / delay (s)
+      this._flow = (count / delay / this._factor).toFixed(6)
 
       // Set the current counter as previous
       this._prev = i
