@@ -53,6 +53,14 @@ module.exports = class WaterFlow {
     return this._isRunning
   }
 
+  setVolume(i) {
+    // V = F / factor * t / 60
+    // (L) (Hz)         (s)
+    // V = i / (factor * 60)
+    // (L)
+    this._volume = i / (this._factor * 60)
+  }
+
   start() {
     debug(`Start`)
 
@@ -117,7 +125,13 @@ module.exports = class WaterFlow {
       this._sensor.watch(this.start.bind(this))
 
       // Compute volume
-      this._volume = (i / (this._factor * 60)).toFixed(6)
+      this.setVolume(i)
+
+      // Compute global flow rate
+      let delay  = (hrend[0] + hrend[1] / 1e9).toFixed(6)
+      // Q (L/min) = F (Hz) / factor
+      // F (Hz) = count / delay (s)
+      this._flow = (i / delay / this._factor).toFixed(6)
 
       // Callback
       this._callback({
@@ -128,27 +142,25 @@ module.exports = class WaterFlow {
         'volume'   : this._volume
       })
 
-      debug(`Flow stopped (${this._volume} L)`)
+      debug(`Flow stopped (${this._volume} L - flow rate ${this._flow} L/m)`)
 
     } else {
       // Sensor is running
 
       // Compute volume
-      // V = F / factor * t / 60
-      // (L) (Hz)         (s)
-      // V = i / (factor * 60)
-      // (L)
-      this._volume = (i / (this._factor * 60)).toFixed(6)
+      this.setVolume(i)
 
       // Compute current flow
       let delay  = (hrend[0] + hrend[1] / 1e9).toFixed(6)
       let count  = i - this._prev
       // Q (L/min) = F (Hz) / factor
       // F (Hz) = count / delay (s)
-      this._flow = (count / delay / this._factor).toFixed(6)
+      this._flow = -1
+      //this.setFlow(count, delay)
 
       // Set the current counter as previous
       this._prev = i
+      this._lasthrend = hrend
 
       debug(`Flow detected (${this._flow} L/min)`)
     }
