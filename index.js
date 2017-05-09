@@ -21,6 +21,7 @@ module.exports = class WaterFlow {
     this._isRunning     = false
     this._hrstart       = 0
     this._hrend         = 0
+    this._lasthrend     = 0
 
     // Characteristics
     this._model         = model
@@ -41,17 +42,6 @@ module.exports = class WaterFlow {
     this._sensor.watch(this.start.bind(this))
 
     debug(`Sensor ${this._model} on pin ${this._pin}`)
-
-    debug(`test hrtime`)
-    this._t = process.hrtime()
-    this._t = process.hrtime(this._t)
-    console.log('benchmark took %d seconds and %d nanoseconds', this._t[0], this._t[1]);
-    this._t = process.hrtime()
-    this._t = process.hrtime(this._t)
-    console.log('benchmark took %d seconds and %d nanoseconds', this._t[0], this._t[1]);
-    this._t = process.hrtime(this._t)
-    console.log('benchmark took %d seconds and %d nanoseconds', this._t[0], this._t[1]);
-    debug(`end test hrtime`)
   }
 
   get flow() {
@@ -162,11 +152,11 @@ module.exports = class WaterFlow {
       this.setVolume(i)
 
       // Compute current flow
-      let delay  = (hrend[0] + hrend[1] / 1e9).toFixed(6)
+      let delay  = (hrend[0] + hrend[1] / 1e9) - (this._lasthrend[0] + this._lasthrend[1] / 1e9)
       let count  = i - this._prev
       // Q (L/min) = F (Hz) / factor
       // F (Hz) = count / delay (s)
-      this._flow = -1
+      this._flow = count / delay / this._factor
       //this.setFlow(count, delay)
 
       // Set the current counter as previous
