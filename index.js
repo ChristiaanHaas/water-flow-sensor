@@ -50,6 +50,16 @@ module.exports = class WaterFlow {
     debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
     this._test = process.hrtime(this._test)
     debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
+    this._test = process.hrtime(this._test)
+    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
+    this._test = process.hrtime(this._test)
+    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
+    this._test = process.hrtime(this._test)
+    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
+    this._test = process.hrtime(this._test)
+    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
+    this._test = process.hrtime(this._test)
+    debug(`this._test = process.hrtime(this._test): ${this._test[0] + this._test[1] / 1e9}`)
     debug(`end test hrtime`)
   }
 
