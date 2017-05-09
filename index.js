@@ -86,7 +86,7 @@ module.exports = class WaterFlow {
   }
 
   tick() {
-    debug(`Tick`)
+    //debug(`Tick`)
 
     // Increment counter
     this._i++
