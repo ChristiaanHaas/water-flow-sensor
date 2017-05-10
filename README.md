@@ -7,7 +7,7 @@
 
 - [x] :electric_plug: Initialize sensor on GPIO pin
 - [x] :articulated_lorry: Set the sensor model
-- [x] :watch: Set a callback delay
+- [x] :shower: Flow detection
 - [x] :droplet: Get flow rate (L/m)
 - [x] :baby_bottle: Get volume consumption (L)
 
@@ -23,21 +23,29 @@ $ npm install water-flow-sensor --save
 ## Usage
 
 1. Require `water-flow-sensor` module
-2. Initialize sensor with `pin`, `model`, `init`, `delay` values and a callback
-3. The callback gives
+2. Initialize sensor with `pin` and `model` values and a `callback`
+3. The callback gives (when flow start/stop)
     * `res.pin`: sensor pin
     * `res.model`: sensor model
-    * `res.flow`: flow rate in L/min
+    * `res.isRunning`: whether the sensor is running or not
+    * `res.flow`: instant flow rate in L/min
     * `res.volume`: volume in L
-    * `res.pulses`: Number of pulses
+4. Get status, as well as flow and volume data anytime
 
 ```js
+// Initialize the sensor
 var wfs     = require('water-flow-sensor')
-  , sensor  = new wfs(17, 'POW110D3B', 0, 1000, wfsCb)
+  , sensor  = new wfs(17, 'POW110D3B', wfsCb)
 
+// Callback
 function wfsCb(res) {
   console.info(`${res.pin} | ${res.model} | ${res.flow} L/m | ${res.volume} L | ${res.pulses}`)
 }
+
+// Access to status and data
+console.info(`Sensor is running: ${sensor.isRunning}`)
+console.info(`Flow rate: ${sensor.flow} L/min`)
+console.info(`Volume: ${sensor.volume} L`)
 ```
 
 
@@ -55,7 +63,7 @@ Please read the [Code of Conduct]().
 
 ### Platforms
 
-Tested on Rapsberry Pi model B
+Developed on Rapsberry Pi model B
 
 
 ### Dependencies
