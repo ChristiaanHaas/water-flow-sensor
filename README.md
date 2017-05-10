@@ -23,7 +23,7 @@ $ npm install water-flow-sensor --save
 ## Usage
 
 1. Require `water-flow-sensor` module
-2. Initialize sensor with `pin` and `model` values and a callback
+2. Initialize sensor with `pin` and `model` values and a `callback`
 3. The callback gives (when flow start/stop)
     * `res.pin`: sensor pin
     * `res.model`: sensor model
