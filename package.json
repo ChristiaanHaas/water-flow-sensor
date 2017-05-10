@@ -1,6 +1,6 @@
 {
   "name": "water-flow-sensor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Get flow rate and volume consumption from water flow sensors",
   "main": "index.js",
   "scripts": {

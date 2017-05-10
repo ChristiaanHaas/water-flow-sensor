@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] - 2017-05-10
 
-## [1.0.0] - 2017-05-10
+## [1.0.1] - 2017-05-10
 ### Added
 - Initialize sensor (GPIO pin, model, callback)
 - Get flow rate (L/m)
@@ -18,4 +18,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Model YF-S201C
 
 [Unreleased]: https://github.com/geoffreypetri/water-flow-sensor
-[1.0.0]: https://www.npmjs.com/package/water-flow-sensor
+[1.0.1]: https://www.npmjs.com/package/water-flow-sensor
