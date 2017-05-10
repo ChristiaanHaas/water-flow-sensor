@@ -1,13 +1,17 @@
 {
   "name": "water-flow-sensor",
   "version": "1.0.0",
-  "description": "",
+  "description": "Get flow rate and volume consumption from water flow sensors",
   "main": "index.js",
   "scripts": {
     "test": "DEBUG=wfs:* node test/run.js",
     "start": "node index.js"
   },
   "author": "Geoffrey PETRI",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/geoffreypetri/water-flow-sensor"
+  },
   "license": "MIT",
   "dependencies": {
     "debug": "^2.6.3",
